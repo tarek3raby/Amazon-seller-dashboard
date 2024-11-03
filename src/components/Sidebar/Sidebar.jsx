@@ -128,9 +128,7 @@ const Sidebar = () => {
             </ListItem>
           ))}
         </List>
-
         <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.12)', mt: 2 }} />
-
         {/* Footer Section */}
         <Box sx={{ p: 2, mt: 'auto' }}>
           <Typography
