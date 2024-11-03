@@ -59,12 +59,13 @@ const ProductTable = ({ products, onView, onEdit, onDelete, loading }) => {
                 className="hover:bg-gray-50 transition-colors"
               >
                 <TableCell>
-                  <Avatar
-                    src={product?.imageUrls?.[0] || ''}
-                    alt={product?.name?.en || 'Product Image'}
-                    variant="rounded"
-                    className="w-16 h-16"
-                  />
+                  <div className="w-16 h-16 overflow-hidden rounded-lg">
+                    <img
+                      src={product?.imageUrls?.[0] || ''}
+                      alt={product?.name?.en || 'Product Image'}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </TableCell>
                 <TableCell className="font-medium">
                   <div className="flex flex-col">

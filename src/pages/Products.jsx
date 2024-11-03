@@ -66,7 +66,7 @@ export default function Products() {
   };
 
   const handleView = (product) => {
-    navigate(`/products/${product._id}`);
+    navigate(`/dashboard/products/${product._id}`);
   };
 
   const handleEdit = (product) => {
