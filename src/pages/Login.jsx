@@ -3,15 +3,49 @@ import { useFormik } from "formik";
 import { useContext, useState } from "react";
 import { DNA } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../Context/authentication";
+import { authContext } from "../Context/authentication";
 
 export default function Login() {
   const [errMsg, setErrMsg] = useState(null);
   const [successMsg, setSuccessMsg] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const {setToken} = useContext(authContext)
+  const { setToken,token } = useContext(authContext);
 
+  
+
+  const loginUser = async (values) => {
+    console.log('values',values);
+    
+    setIsLoading(true);
+    try {
+      const { data } = await axios.post(
+        "https://ahmed-sabry-ffbbe964.koyeb.app/user/login",
+        values
+      );
+      console.log("date after login",data);
+
+      if (data.token) {
+        localStorage.setItem('token',data.token);
+        setToken(data.token);
+        setSuccessMsg("Welcome to");
+      }
+      if(data.role==="user"){
+        console.log("im a user");
+        await checkSellerStatus(data.token);
+      }
+
+      if(data.role==="seller"){
+        setTimeout(() => {
+       navigate("/dashboard");
+     }, 1000);
+     }
+      
+    } catch (error) {
+      setErrMsg(error.response.data.message);
+    }
+    setIsLoading(false);
+  };
   const checkSellerStatus = async (token) => {
     try {
       const { data } = await axios.get(
@@ -39,36 +73,6 @@ export default function Login() {
       console.error("Error checking seller status:", error);
       setErrMsg("Failed to check seller status. Please try again later.");
     }
-  };
-
-  const loginUser = async (values) => {
-    setIsLoading(true);
-    try {
-      const { data } = await axios.post(
-        "https://ahmed-sabry-ffbbe964.koyeb.app/user/login",
-        values
-      );
-      console.log("date after login",data);
-
-      if (data.token) {
-        login(data.token);
-        setSuccessMsg("Welcome to");
-      }
-      if(data.role==="user"){
-        console.log("im a user");
-        await checkSellerStatus(data.token);
-      }
-
-      if(data.role==="seller"){
-        setTimeout(() => {
-       navigate("/dashboard");
-     }, 1000);
-     }
-      
-    } catch (error) {
-      setErrMsg(error.response.data.message);
-    }
-    setIsLoading(false);
   };
 
   const formikObj = useFormik({

@@ -12,10 +12,11 @@ import Login from './pages/Login';
 import AuthProvider from './Context/authentication';
 import Welcome from './pages/Welcome';
 import SellerRegister from './pages/SellerRegister';
-import Products from './pages/Products';
+// import Products from './pages/Products';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './theme/theme';
-import { BrowserRouter } from 'react-router-dom';
+import ProductDetails from './pages/ProductDetails';
+import Products from './pages/Products';
 
 const router = createBrowserRouter([
   {
@@ -32,13 +33,14 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { path: 'dashboard', element: <Dashboard /> },
-      { path: 'products', element: <Products /> },
+      { path: 'products', element: <Products/> },
       { path: 'products/new', element: <AddEditProduct /> },
       { path: 'products/edit/:id', element: <AddEditProduct /> },
       { path: 'orders', element: <Orders /> },
       { path: 'orders/:id', element: <OrderDetails /> },
       { path: 'store-settings', element: <StoreSettings /> },
       { path: 'profile', element: <Profile /> },
+      { path: 'products/:id', element: <ProductDetails /> },
     ],
   },
 ]);
@@ -50,5 +52,5 @@ export default function App() {
         <RouterProvider router={router} />
       </AuthProvider>
     </ThemeProvider>
-  );
+);
 }
