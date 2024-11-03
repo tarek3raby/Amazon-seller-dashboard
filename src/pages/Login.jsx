@@ -12,6 +12,34 @@ export default function Login() {
   const navigate = useNavigate();
   const {setToken} = useContext(authContext)
 
+  const checkSellerStatus = async (token) => {
+    try {
+      const { data } = await axios.get(
+        "https://ahmed-sabry-ffbbe964.koyeb.app/sellers/status",
+        {
+          headers: {
+            Authorization: `${token}`,
+          },
+        }
+      );
+
+      if (!data.status) {
+        setTimeout(() => {
+          navigate("/welcome");
+        }, 1000);
+      }
+
+      if (data.status === "pending") {
+        console.log("waiting for admin approve");
+      }
+      if (data.status === "rejected") {
+        console.log("your application has been rejected");
+      }
+    } catch (error) {
+      console.error("Error checking seller status:", error);
+      setErrMsg("Failed to check seller status. Please try again later.");
+    }
+  };
 
   const loginUser = async (values) => {
     // Send the form data to the server
@@ -22,20 +50,24 @@ export default function Login() {
         "https://ahmed-sabry-ffbbe964.koyeb.app/user/login",
         values
       );
-      console.log(data);
+      console.log("date after login",data);
+
       if (data.token) {
         localStorage.setItem('token',data.token)
         setToken(data.token)
         setSuccessMsg("Welcome to");
       }
       if(data.role==="user"){
-         setTimeout(() => {
-        navigate("/welcome");
-      }, 1000);
+        console.log("im a user");
+        await checkSellerStatus(data.token);
       }
-      // setTimeout(() => {
-      //   navigate("/products");
-      // }, 1000);
+
+      if(data.role==="seller"){
+        setTimeout(() => {
+       navigate("/dashboard");
+     }, 1000);
+     }
+      
     } catch (error) {
       console.log(error.response.data.message);
       setErrMsg(error.response.data.message);

@@ -10,6 +10,8 @@ AuthProvider.propTypes = {
 export default function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   useEffect(() => {
+    const locToken=localStorage.getItem('token')
+    setToken(locToken)
     
   
   }, [])
