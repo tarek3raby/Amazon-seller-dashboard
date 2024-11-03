@@ -1,4 +1,3 @@
-
 import OrderCard from "../components/Orders/OrderCard";
 
 const Orders = () => {
@@ -14,7 +13,13 @@ const Orders = () => {
       <h2 className="orders-title text-2xl font-bold mb-4">Orders</h2>
       <div className="flex space-x-4"> 
         {dummyOrders.map(order => (
-          <OrderCard key={order.id} order={order} />
+          <OrderCard 
+            key={order.id}
+            order={{
+              ...order,
+              id: order.id.toString()
+            }}
+          />
         ))}
       </div>
     </div>
