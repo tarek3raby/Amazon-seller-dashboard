@@ -15,7 +15,6 @@ export default function Login() {
   
 
   const loginUser = async (values) => {
-    console.log('values',values);
     
     setIsLoading(true);
     try {
@@ -23,15 +22,12 @@ export default function Login() {
         "https://ahmed-sabry-ffbbe964.koyeb.app/user/login",
         values
       );
-      console.log("date after login",data);
-
       if (data.token) {
         localStorage.setItem('token',data.token);
         setToken(data.token);
         setSuccessMsg("Welcome to");
       }
       if(data.role==="user"){
-        console.log("im a user");
         await checkSellerStatus(data.token);
       }
 
@@ -64,14 +60,13 @@ export default function Login() {
       }
 
       if (data.status === "pending") {
-        console.log("waiting for admin approve");
+        alert("waiting for admin approve");
       }
       if (data.status === "rejected") {
-        console.log("your application has been rejected");
+        alert("your application has been rejected");
       }
     } catch (error) {
-      console.error("Error checking seller status:", error);
-      setErrMsg("Failed to check seller status. Please try again later.");
+      alert("Failed to check seller status. Please try again later.");
     }
   };
 
@@ -82,7 +77,6 @@ export default function Login() {
     },
     onSubmit: loginUser,
     validate: (values) => {
-      console.log("validate data", values);
       setErrMsg(null);
       const errors = {};
 
@@ -101,8 +95,6 @@ export default function Login() {
       if (!values.password) {
         errors.password = "Password is required";
       }
-      console.log(errors);
-
       return errors;
     },
   });

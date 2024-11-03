@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import { useAuth } from '../../Context/authentication';
 import {
@@ -22,11 +22,12 @@ import {
   ExitToApp as LogoutIcon,
   Menu as MenuIcon
 } from '@mui/icons-material';
+import { authContext } from '../../Context/authentication';
 
 const TopBar = () => {
   const theme = useTheme();
+  const { setToken } = useContext(authContext);
   const navigate = useNavigate();
-  // const { logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
 
@@ -47,7 +48,8 @@ const TopBar = () => {
   };
 
   const handleLogout = () => {
-    logout();
+    localStorage.removeItem('token');
+    setToken(null); 
     navigate('/login');
   };
 
@@ -184,7 +186,8 @@ const TopBar = () => {
             }}
           >
             <LogoutIcon fontSize="small" />
-            <Typography>Logout</Typography>
+            {/* <Typography>Logout</Typography> */}
+            Logout
           </MenuItem>
         </Menu>
 
