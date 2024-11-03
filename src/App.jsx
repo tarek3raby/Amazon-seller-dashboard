@@ -1,8 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Layout from './layouts/Layout'; 
-import AuthLayout from './layouts/AuthLayout'; 
+import Layout from './layouts/Layout';
+import AuthLayout from './layouts/AuthLayout';
 import Dashboard from './pages/Dashboard';
-import Products from './pages/Products';
+
 import AddEditProduct from './pages/AddEditProduct';
 import Orders from './pages/Orders';
 import OrderDetails from './pages/OrderDetails';
@@ -11,7 +11,12 @@ import Profile from './pages/Profile';
 import Login from './pages/Login';
 import AuthProvider from './Context/authentication';
 import Welcome from './pages/Welcome';
-import SellerRegister from './pages/SellerRegister'; 
+import SellerRegister from './pages/SellerRegister';
+// import Products from './pages/Products';
+import { ThemeProvider } from '@mui/material';
+import { theme } from './theme/theme';
+import ProductDetails from './pages/ProductDetails';
+import Products from './pages/Products';
 
 const router = createBrowserRouter([
   {
@@ -19,32 +24,33 @@ const router = createBrowserRouter([
     element: <AuthLayout />, // Use AuthLayout for login and registration
     children: [
       { path: '/welcome', element: <Welcome /> },
-      { path: '/login', element: <Login /> }, 
-      { path: '/seller-register', element: <SellerRegister /> }, 
+      { path: '/login', element: <Login /> },
+      { path: '/seller-register', element: <SellerRegister /> },
     ],
   },
   {
-    path: '/dashboard', 
-    element: <Layout />, 
+    path: '/dashboard',
+    element: <Layout />,
     children: [
       { path: 'dashboard', element: <Dashboard /> },
-      { path: 'products', element: <Products /> },
+      { path: 'products', element: <Products/> },
       { path: 'products/new', element: <AddEditProduct /> },
       { path: 'products/edit/:id', element: <AddEditProduct /> },
       { path: 'orders', element: <Orders /> },
       { path: 'orders/:id', element: <OrderDetails /> },
       { path: 'store-settings', element: <StoreSettings /> },
       { path: 'profile', element: <Profile /> },
+      { path: 'products/:id', element: <ProductDetails /> },
     ],
   },
 ]);
 
 export default function App() {
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <AuthProvider>
         <RouterProvider router={router} />
       </AuthProvider>
-    </>
-  );
+    </ThemeProvider>
+);
 }

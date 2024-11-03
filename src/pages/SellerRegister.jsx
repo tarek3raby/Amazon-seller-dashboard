@@ -364,6 +364,7 @@ const governorates = [
 
 export default function SellerRegister() {
   const { token } = useContext(authContext);
+  console.log("token",token);
   
   const [activeStep, setActiveStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
