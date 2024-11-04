@@ -32,13 +32,13 @@ const router = createBrowserRouter([
     path: "/",
     element: <AuthLayout />,
     children: [
-      { 
-        path: "/login", 
+      {
+        path: "/login",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <Login />
           </Suspense>
-        ) 
+        )
       },
       {
         path: "/welcome",
@@ -50,7 +50,7 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      
+
       {
         path: "/seller-register",
         element: (
@@ -71,77 +71,77 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { 
-        path: "dashboard", 
+      {
+        path: "dashboard",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <Dashboard />
           </Suspense>
-        ) 
+        )
       },
-      { 
-        path: "products", 
+      {
+        path: "products",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <Products />
           </Suspense>
-        ) 
+        )
       },
-      { 
-        path: "products/new", 
+      {
+        path: "products/new",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <AddEditProduct />
           </Suspense>
-        ) 
+        )
       },
-      { 
-        path: "products/edit/:id", 
+      {
+        path: "products/edit/:id",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <AddEditProduct />
           </Suspense>
-        ) 
+        )
       },
-      { 
-        path: "orders", 
+      {
+        path: "orders",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <Orders />
           </Suspense>
-        ) 
+        )
       },
-      { 
-        path: "orders/:id", 
+      {
+        path: "orders/:id",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <OrderDetails />
           </Suspense>
-        ) 
+        )
       },
-      { 
-        path: "store-settings", 
+      {
+        path: "store-settings",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <StoreSettings />
           </Suspense>
-        ) 
+        )
       },
-      { 
-        path: "profile", 
+      {
+        path: "profile",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <Profile />
           </Suspense>
-        ) 
+        )
       },
-      { 
-        path: "products/:id", 
+      {
+        path: "products/:id",
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <ProductDetails />
           </Suspense>
-        ) 
+        )
       },
     ],
   },

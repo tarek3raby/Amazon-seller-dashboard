@@ -4,14 +4,14 @@ import axios from "axios";
 const apiUrl = "https://ahmed-sabry-ffbbe964.koyeb.app/products";
 const uploadUrl = "https://ahmed-sabry-ffbbe964.koyeb.app/upload/image";
 
-const getToken = () => localStorage.getItem('token');
+const getToken = () => localStorage.getItem("token");
 
 // Configure axios defaults if needed
 const axiosInstance = axios.create({
   headers: {
     get Authorization() {
       return getToken(); // This will get fresh token on each request
-    }
+    },
   },
 });
 
@@ -43,7 +43,7 @@ async function uploadImage(file) {
 async function getProductsWithPagination(page, limit) {
   try {
     const response = await axiosInstance.get(
-      `${apiUrl}/pagination?page=${page}&limit=${limit}`
+      `${apiUrl}/seller/products?page=${page}&limit=${limit}`
     );
     return response.data;
   } catch (error) {
