@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../Context/authentication';
+// import { useAuth } from '../../Context/authentication';
 import {
   AppBar,
   Toolbar,
@@ -26,7 +26,7 @@ import {
 const TopBar = () => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  // const { logout } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const [notificationsAnchor, setNotificationsAnchor] = useState(null);
 

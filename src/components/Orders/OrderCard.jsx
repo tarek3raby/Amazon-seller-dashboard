@@ -14,7 +14,6 @@ const OrderCard = ({ order }) => {
   );
 };
 
-// Add prop types validation
 OrderCard.propTypes = {
   order: PropTypes.shape({
     id: PropTypes.string.isRequired,

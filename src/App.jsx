@@ -12,7 +12,7 @@ import Login from './pages/Login';
 import AuthProvider from './Context/authentication';
 import Welcome from './pages/Welcome';
 import SellerRegister from './pages/SellerRegister';
-import Products from './pages/Products';
+// import Products from './pages/Products';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './theme/theme';
 import ProductDetails from './pages/ProductDetails';
@@ -38,6 +38,7 @@ const router = createBrowserRouter([
       { path: 'orders/:id', element: <OrderDetails /> },
       { path: 'store-settings', element: <StoreSettings /> },
       { path: 'profile', element: <Profile /> },
+      { path: 'products/:id', element: <ProductDetails /> },
       { path: 'products/:id', element: <ProductDetails /> },
     ],
   },

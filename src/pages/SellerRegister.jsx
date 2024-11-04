@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Stepper, Step, StepLabel, Button, TextField, Typography, Paper, Box, MenuItem } from '@mui/material';
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
+import { authContext } from '../Context/authentication';
 
 const steps = ['Business Information', 'Seller Information', 'Billing'];
 
@@ -234,7 +236,7 @@ const getStepContent = (step, values, handleChange, errors, touched) => {
                 onChange={handleChange}
                 error={touched.dateOfBirthYear && Boolean(errors.dateOfBirthYear)}
                 helperText={touched.dateOfBirthYear && errors.dateOfBirthYear}
-                sx={{ width: '100px' }} 
+                sx={{ width: '110px' }} 
                 InputProps={{ style: { height: '47px', padding: '0 10px' } }}
               >
                 {[...Array(47)].map((_, i) => (
@@ -360,8 +362,12 @@ const governorates = [
   'South Sinai', 'New Valley', 'Ain Sokhna'
 ];
 
-function SellerRegister() {
+export default function SellerRegister() {
+  const { token } = useContext(authContext);
+  console.log("token",token);
+  
   const [activeStep, setActiveStep] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -371,7 +377,11 @@ function SellerRegister() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+
     // Combine date of birth fields into a single field
     const { dateOfBirthDay, dateOfBirthMonth, dateOfBirthYear, expirationMonth, expirationYear, ...rest } = values;
     const birthDate = `${dateOfBirthYear}-${String(dateOfBirthMonth).padStart(2, '0')}-${String(dateOfBirthDay).padStart(2, '0')}`;
@@ -385,7 +395,22 @@ function SellerRegister() {
     };
 
     // Handle form submission to API 
-    console.log(dataToSend);
+    console.log("dataToSend", dataToSend);
+    try {
+      const { data } = await axios.post('https://ahmed-sabry-ffbbe964.koyeb.app/sellers/register', dataToSend, {
+        headers: {
+          Authorization: `${token}`
+        }      
+      });
+      console.log("Api data", data);
+      if (data.status === "pending") {
+        alert('Your application is pending approval from the admin. Please wait.');
+      }
+    } catch (error) {
+      console.error("Error during registration:", error.response ? error.response.data : error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -467,7 +492,7 @@ function SellerRegister() {
                       variant="contained"
                       color="primary"
                       type="submit" // Submit button for the final step
-                      disabled={!isValid} // Disable if there are validation errors in any step
+                      disabled={!isValid || isSubmitting} // Disable if there are validation errors or if submitting
                     >
                       Submit
                     </Button>
@@ -482,4 +507,4 @@ function SellerRegister() {
   );
 }
 
-export default SellerRegister;
+
