@@ -1,28 +1,53 @@
-import OrderCard from "../components/Orders/OrderCard";
+import { useState, useEffect } from 'react';
+import { Container, Typography, CircularProgress, Alert, Box } from '@mui/material';
+import OrdersTable from '../components/Orders/OrdersTable';
+import orderService from '../services/orderService';
 
 const Orders = () => {
-  // Dummy data for testing
-  const dummyOrders = [
-    { id: 1, status: "Pending", totalPrice: 50, orderDate: "2023-10-01" },
-    { id: 2, status: "Shipped", totalPrice: 30, orderDate: "2023-10-02" },
-    { id: 3, status: "Delivered", totalPrice: 20, orderDate: "2023-10-03" },
-  ];
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const data = await orderService.getSellerOrders();
+        setOrders(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message || 'Failed to fetch orders');
+        setLoading(false);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
+  if (loading) {
+    return (
+      <Container sx={{ display: 'flex', justifyContent: 'center', py: 4, mt: 8 }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container sx={{ py: 4, mt: 8 }}>
+        <Alert severity="error">{error}</Alert>
+      </Container>
+    );
+  }
 
   return (
-    <div className="orders-container p-4 bg-gray-100 rounded-lg shadow-md">
-      <h2 className="orders-title text-2xl font-bold mb-4">Orders</h2>
-      <div className="flex space-x-4"> 
-        {dummyOrders.map(order => (
-          <OrderCard 
-            key={order.id}
-            order={{
-              ...order,
-              id: order.id.toString()
-            }}
-          />
-        ))}
-      </div>
-    </div>
+    <Box sx={{ mt: 8 }}>
+      <Container sx={{ py: 4 }}>
+        <Typography variant="h4" component="h1" gutterBottom>
+          Orders
+        </Typography>
+        <OrdersTable orders={orders} />
+      </Container>
+    </Box>
   );
 };
 
