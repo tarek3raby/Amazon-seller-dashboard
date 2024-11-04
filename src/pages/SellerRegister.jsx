@@ -4,6 +4,7 @@ import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { authContext } from '../Context/authentication';
+import { useNavigate } from 'react-router-dom';
 
 const steps = ['Business Information', 'Seller Information', 'Billing'];
 
@@ -364,7 +365,7 @@ const governorates = [
 
 export default function SellerRegister() {
   const { token } = useContext(authContext);
-  console.log("token",token);
+  const navigate = useNavigate();
   
   const [activeStep, setActiveStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -395,16 +396,16 @@ export default function SellerRegister() {
     };
 
     // Handle form submission to API 
-    console.log("dataToSend", dataToSend);
     try {
       const { data } = await axios.post('https://ahmed-sabry-ffbbe964.koyeb.app/sellers/register', dataToSend, {
         headers: {
           Authorization: `${token}`
         }      
       });
-      console.log("Api data", data);
       if (data.status === "pending") {
-        alert('Your application is pending approval from the admin. Please wait.');
+        if (window.confirm('Your application is pending approval from the admin. Please wait.')) {
+          navigate('/login');
+        }
       }
     } catch (error) {
       console.error("Error during registration:", error.response ? error.response.data : error.message);

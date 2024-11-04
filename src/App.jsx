@@ -1,47 +1,148 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Layout from './layouts/Layout';
-import AuthLayout from './layouts/AuthLayout';
-import Dashboard from './pages/Dashboard';
+import { lazy, Suspense } from 'react';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Layout from "./layouts/Layout";
+import AuthLayout from "./layouts/AuthLayout";
+import ProtectedRoute from "./components/Protect/ProtectedRoute";
+import AuthProvider from "./Context/authentication";
+import { ThemeProvider } from "@mui/material";
+import { theme } from "./theme/theme";
 
-import AddEditProduct from './pages/AddEditProduct';
-import Orders from './pages/Orders';
-import OrderDetails from './pages/OrderDetails';
-import StoreSettings from './pages/StoreSettings';
-import Profile from './pages/Profile';
-import Login from './pages/Login';
-import AuthProvider from './Context/authentication';
-import Welcome from './pages/Welcome';
-import SellerRegister from './pages/SellerRegister';
-// import Products from './pages/Products';
-import { ThemeProvider } from '@mui/material';
-import { theme } from './theme/theme';
-import ProductDetails from './pages/ProductDetails';
-import Products from './pages/Products';
+// Create a loading component
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    Loading...
+  </div>
+);
+
+// Lazy imports remain the same
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Products = lazy(() => import("./pages/Products"));
+const AddEditProduct = lazy(() => import("./pages/AddEditProduct"));
+const Orders = lazy(() => import("./pages/Orders"));
+const OrderDetails = lazy(() => import("./pages/OrderDetails"));
+const StoreSettings = lazy(() => import("./pages/StoreSettings"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Login = lazy(() => import("./pages/Login"));
+const Welcome = lazy(() => import("./pages/Welcome"));
+const SellerRegister = lazy(() => import("./pages/SellerRegister"));
+const ProductDetails = lazy(() => import("./pages/ProductDetails"));
+
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <AuthLayout />, // Use AuthLayout for login and registration
+    path: "/",
+    element: <AuthLayout />,
     children: [
-      { path: '/welcome', element: <Welcome /> },
-      { path: '/login', element: <Login /> },
-      { path: '/', element: <Login /> },
-      { path: '/seller-register', element: <SellerRegister /> },
+      {
+        path: "/login",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <Login />
+          </Suspense>
+        )
+      },
+      {
+        path: "/welcome",
+        element: (
+          <ProtectedRoute>
+            <Suspense fallback={<LoadingFallback />}>
+              <Welcome />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
+
+      {
+        path: "/seller-register",
+        element: (
+          <ProtectedRoute>
+            <Suspense fallback={<LoadingFallback />}>
+              <SellerRegister />
+            </Suspense>
+          </ProtectedRoute>
+        ),
+      },
     ],
   },
   {
-    path: '/dashboard',
-    element: <Layout />,
+    path: "/dashboard",
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
-      { path: 'dashboard', element: <Dashboard /> },
-      { path: 'products', element: <Products /> },
-      { path: 'products/new', element: <AddEditProduct /> },
-      { path: 'products/edit/:id', element: <AddEditProduct /> },
-      { path: 'orders', element: <Orders /> },
-      { path: 'orders/:id', element: <OrderDetails /> },
-      { path: 'store-settings', element: <StoreSettings /> },
-      { path: 'profile', element: <Profile /> },
-      { path: 'products/:id', element: <ProductDetails /> },
-
+      {
+        path: "dashboard",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <Dashboard />
+          </Suspense>
+        )
+      },
+      {
+        path: "products",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <Products />
+          </Suspense>
+        )
+      },
+      {
+        path: "products/new",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <AddEditProduct />
+          </Suspense>
+        )
+      },
+      {
+        path: "products/edit/:id",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <AddEditProduct />
+          </Suspense>
+        )
+      },
+      {
+        path: "orders",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <Orders />
+          </Suspense>
+        )
+      },
+      {
+        path: "orders/:id",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <OrderDetails />
+          </Suspense>
+        )
+      },
+      {
+        path: "store-settings",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <StoreSettings />
+          </Suspense>
+        )
+      },
+      {
+        path: "profile",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <Profile />
+          </Suspense>
+        )
+      },
+      {
+        path: "products/:id",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <ProductDetails />
+          </Suspense>
+        )
+      },
     ],
   },
 ]);

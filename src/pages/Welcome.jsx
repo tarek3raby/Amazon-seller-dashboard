@@ -1,7 +1,13 @@
 import { FaCheckCircle } from 'react-icons/fa';
 import { Button, Box, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export default function Welcome() { 
+  const navigate = useNavigate();
+
+  const handleBeginClick = () => {
+    navigate('/seller-register');
+  };
 
   return (
     <div className="flex flex-col items-center p-8 bg-gray-50 min-h-screen">
@@ -97,7 +103,7 @@ export default function Welcome() {
             variant="contained" 
             style={{ backgroundColor: '#118394', width: '80%' }} 
             size="large" 
-            onClick={() => window.location.href = '/seller-register'}
+            onClick={handleBeginClick}
           >
             Begin
           </Button>
