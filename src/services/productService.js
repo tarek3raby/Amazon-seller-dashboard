@@ -4,8 +4,7 @@ import axios from "axios";
 const apiUrl = "https://ahmed-sabry-ffbbe964.koyeb.app/products";
 const uploadUrl = "https://ahmed-sabry-ffbbe964.koyeb.app/upload/image";
 
-const getToken = () =>
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFobWVkc2FicmloaW5kYXdpQGdtYWlsLmNvbSIsImlkIjoiNjZmNWI2NWM0NWU0MjBiNDQ0NDc1NWYzIiwicm9sZSI6InNlbGxlciIsImlzQWN0aXZlIjp0cnVlLCJuYW1lIjoiQWhtZWQgc2FicnkiLCJpYXQiOjE3MzA2NTUzMDMsImV4cCI6MTczMDc0MTcwM30.PvXmyeO-7zmiAB8JFSTmjrVUYzO2Qdj9u9QyxaE_sEg";
+const getToken = () => localStorage.getItem("token");
 
 // Configure axios defaults if needed
 const axiosInstance = axios.create({
