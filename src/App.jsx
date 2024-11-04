@@ -32,6 +32,14 @@ const router = createBrowserRouter([
     path: "/",
     element: <AuthLayout />,
     children: [
+      { 
+        path: "/login", 
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <Login />
+          </Suspense>
+        ) 
+      },
       {
         path: "/welcome",
         element: (
@@ -42,14 +50,7 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      { 
-        path: "/login", 
-        element: (
-          <Suspense fallback={<LoadingFallback />}>
-            <Login />
-          </Suspense>
-        ) 
-      },
+      
       {
         path: "/seller-register",
         element: (
