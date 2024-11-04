@@ -16,6 +16,7 @@ import SellerRegister from './pages/SellerRegister';
 import { ThemeProvider } from '@mui/material';
 import { theme } from './theme/theme';
 import ProductDetails from './pages/ProductDetails';
+import Products from './pages/Products';
 const router = createBrowserRouter([
   {
     path: '/',
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
       { path: 'store-settings', element: <StoreSettings /> },
       { path: 'profile', element: <Profile /> },
       { path: 'products/:id', element: <ProductDetails /> },
-      { path: 'products/:id', element: <ProductDetails /> },
+
     ],
   },
 ]);
