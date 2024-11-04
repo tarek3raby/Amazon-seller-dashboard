@@ -1,20 +1,17 @@
-import { Navigate } from 'react-router-dom';
 import { useContext } from 'react';
-import PropTypes from 'prop-types';
+import { Navigate } from 'react-router-dom';
 import { authContext } from '../../Context/authentication';
 
-const ProtectedRoute = ({ children }) => {
-  const { token } = useContext(authContext);
-  
+export default function ProtectedRoute({ children }) {
+  const { token, isLoading } = useContext(authContext);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Or your loading component
+  }
+
   if (!token) {
     return <Navigate to="/login" replace />;
   }
 
   return children;
-};
-
-ProtectedRoute.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export default ProtectedRoute; 
+} 
