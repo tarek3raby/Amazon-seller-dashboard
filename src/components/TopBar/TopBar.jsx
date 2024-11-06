@@ -24,6 +24,8 @@ import {
 } from '@mui/icons-material';
 import { authContext } from '../../Context/authentication';
 
+const drawerWidth = 260; // Make sure this matches the Sidebar width
+
 const TopBar = () => {
   const theme = useTheme();
   const { setToken } = useContext(authContext);
@@ -61,7 +63,8 @@ const TopBar = () => {
         zIndex: (theme) => theme.zIndex.drawer + 1,
         backgroundColor: theme.palette.primary.main,
         borderBottom: `1px solid ${theme.palette.divider}`,
-        width: '83%'
+        ml: `${drawerWidth}px`,
+        width: `calc(100% - ${drawerWidth}px)` // This ensures proper width
       }}
     >
       <Toolbar>
