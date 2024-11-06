@@ -16,7 +16,15 @@ const OrdersTable = ({ orders }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
+  if (!Array.isArray(orders) || orders.length === 0) {
+    return null;
+  }
+
   const handleOpenModal = (order) => {
+    if (!order) {
+      console.warn('No order data provided');
+      return;
+    }
     setSelectedOrder(order);
     setModalOpen(true);
   };
@@ -29,7 +37,20 @@ const OrdersTable = ({ orders }) => {
   return (
     <>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="orders table">
+        <Table 
+          sx={{ 
+            minWidth: 650,
+            borderCollapse: 'collapse',
+            '& th, & td': {
+              border: '1px solid rgba(224, 224, 224, 1)',
+            },
+            '& th': {
+              backgroundColor: '#f5f5f5',
+              fontWeight: 'bold'
+            }
+          }} 
+          aria-label="orders table"
+        >
           <TableHead>
             <TableRow>
               <TableCell>Order ID</TableCell>
@@ -42,19 +63,20 @@ const OrdersTable = ({ orders }) => {
           </TableHead>
           <TableBody>
             {orders.map((order) => (
-              <TableRow key={order.orderId}>
-                <TableCell>{order.orderId}</TableCell>
-                <TableCell>{order.customer.name}</TableCell>
-                <TableCell>{order.customer.email}</TableCell>
-                <TableCell>{order.orderStatus}</TableCell>
-                <TableCell>${order.sellerTotalPrice}</TableCell>
+              <TableRow key={order?.orderId || `unknown-${Math.random()}`}>
+                <TableCell>{order?.orderId || 'N/A'}</TableCell>
+                <TableCell>{order?.customer?.name || 'N/A'}</TableCell>
+                <TableCell>{order?.customer?.email || 'N/A'}</TableCell>
+                <TableCell>{order?.orderStatus || 'N/A'}</TableCell>
+                <TableCell>${(order?.sellerTotalPrice || 0).toFixed(2)}</TableCell>
                 <TableCell>
                   <Button
                     variant="contained"
                     color="primary"
+                    size="small"
                     onClick={() => handleOpenModal(order)}
                   >
-                    View Details
+                    Details
                   </Button>
                 </TableCell>
               </TableRow>
@@ -63,11 +85,13 @@ const OrdersTable = ({ orders }) => {
         </Table>
       </TableContainer>
 
-      <OrderDetailsModal
-        open={modalOpen}
-        onClose={handleCloseModal}
-        order={selectedOrder}
-      />
+      {selectedOrder && (
+        <OrderDetailsModal
+          open={modalOpen}
+          onClose={handleCloseModal}
+          order={selectedOrder}
+        />
+      )}
     </>
   );
 };
@@ -75,13 +99,13 @@ const OrdersTable = ({ orders }) => {
 OrdersTable.propTypes = {
   orders: PropTypes.arrayOf(
     PropTypes.shape({
-      orderId: PropTypes.string.isRequired,
+      orderId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
       customer: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        email: PropTypes.string.isRequired,
-      }).isRequired,
-      orderStatus: PropTypes.string.isRequired,
-      sellerTotalPrice: PropTypes.number.isRequired,
+        name: PropTypes.string,
+        email: PropTypes.string,
+      }),
+      orderStatus: PropTypes.string,
+      sellerTotalPrice: PropTypes.number,
     })
   ).isRequired,
 };

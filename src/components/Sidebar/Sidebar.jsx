@@ -21,7 +21,7 @@ import {
   Store as StoreIcon
 } from '@mui/icons-material';
 
-const drawerWidth = '17%';
+const drawerWidth = 260;
 
 const Sidebar = () => {
   const location = useLocation();
@@ -60,16 +60,25 @@ const Sidebar = () => {
       variant="permanent"
       sx={{
         width: drawerWidth,
-        flexShrink: 0,
         '& .MuiDrawer-paper': {
           width: drawerWidth,
           boxSizing: 'border-box',
           backgroundColor: theme.palette.primary.main,
           color: theme.palette.primary.contrastText,
+          border: 'none',
+          height: '100vh',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: theme.zIndex.drawer,
         },
       }}
     >
-      <Box sx={{ overflow: 'auto' }}>
+      <Box sx={{ 
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+      }}>
         {/* Logo/Brand Section */}
         <Box
           sx={{

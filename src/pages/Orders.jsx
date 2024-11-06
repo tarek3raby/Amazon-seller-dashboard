@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Typography, CircularProgress, Alert, Box } from '@mui/material';
+import { Container, Typography, CircularProgress, Box, Alert, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import OrdersTable from '../components/Orders/OrdersTable';
 import orderService from '../services/orderService';
 
@@ -7,12 +7,13 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [statusFilter, setStatusFilter] = useState('all');
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
         const data = await orderService.getSellerOrders();
-        setOrders(data);
+        setOrders(data || []);
         setLoading(false);
       } catch (err) {
         setError(err.message || 'Failed to fetch orders');
@@ -22,6 +23,13 @@ const Orders = () => {
 
     fetchOrders();
   }, []);
+
+  const filteredOrders = orders.filter(order => 
+    statusFilter === 'all' ? true : order?.orderStatus === statusFilter
+  );
+
+  // Get unique statuses from orders
+  const uniqueStatuses = [...new Set(orders.map(order => order?.orderStatus))].filter(Boolean);
 
   if (loading) {
     return (
@@ -42,10 +50,74 @@ const Orders = () => {
   return (
     <Box sx={{ mt: 8 }}>
       <Container sx={{ py: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Orders
-        </Typography>
-        <OrdersTable orders={orders} />
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          mb: 4 
+        }}>
+          <Typography variant="h4" component="h1">
+            Orders
+          </Typography>
+          
+          {orders.length > 0 && (
+            <FormControl 
+              size="small"
+              sx={{ 
+                minWidth: 200,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                  backgroundColor: 'background.paper',
+                  '&:hover': {
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'primary.main',
+                    },
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'text.secondary',
+                },
+                '& .MuiSelect-select': {
+                  py: 1.5,
+                },
+              }}
+            >
+              <InputLabel id="status-filter-label">Filter by Status</InputLabel>
+              <Select
+                labelId="status-filter-label"
+                id="status-filter"
+                value={statusFilter}
+                label="Filter by Status"
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <MenuItem value="all" sx={{ py: 1 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    All Orders
+                  </Box>
+                </MenuItem>
+                {uniqueStatuses.map((status) => (
+                  <MenuItem 
+                    key={status} 
+                    value={status}
+                    sx={{ py: 1 }}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      {status}
+                    </Box>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+        </Box>
+
+        {(!orders || !Array.isArray(orders) || orders.length === 0) ? (
+          <Typography variant="body1" sx={{ textAlign: 'center', py: 4 }}>
+            You don't have any orders
+          </Typography>
+        ) : (
+          <OrdersTable orders={filteredOrders} />
+        )}
       </Container>
     </Box>
   );
