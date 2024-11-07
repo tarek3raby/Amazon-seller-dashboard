@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import AuthLayout from "./layouts/AuthLayout";
 import ProtectedRoute from "./components/Protect/ProtectedRoute";
@@ -20,7 +20,6 @@ const Products = lazy(() => import("./pages/Products"));
 const AddEditProduct = lazy(() => import("./pages/AddEditProduct"));
 const Orders = lazy(() => import("./pages/Orders"));
 const OrderDetails = lazy(() => import("./pages/OrderDetails"));
-const StoreSettings = lazy(() => import("./pages/StoreSettings"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Login = lazy(() => import("./pages/Login"));
 const Welcome = lazy(() => import("./pages/Welcome"));
@@ -37,6 +36,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<LoadingFallback />}>
             <Login />
+          </Suspense>
+        )
+      },
+      {
+        path: "",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <Navigate to="/dashboard" replace />
           </Suspense>
         )
       },
@@ -71,6 +78,14 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
+      {
+        path: "",
+        element: (
+          <Suspense fallback={<LoadingFallback />}>
+            <Dashboard />
+          </Suspense>
+        )
+      },
       {
         path: "dashboard",
         element: (
@@ -120,14 +135,6 @@ const router = createBrowserRouter([
         )
       },
       {
-        path: "store-settings",
-        element: (
-          <Suspense fallback={<LoadingFallback />}>
-            <StoreSettings />
-          </Suspense>
-        )
-      },
-      {
         path: "profile",
         element: (
           <Suspense fallback={<LoadingFallback />}>
@@ -145,6 +152,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  
 ]);
 
 export default function App() {

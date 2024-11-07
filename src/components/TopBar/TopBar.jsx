@@ -17,14 +17,13 @@ import {
 } from '@mui/material';
 import {
   Notifications as NotificationsIcon,
-  Settings as SettingsIcon,
   Person as PersonIcon,
   ExitToApp as LogoutIcon,
   Menu as MenuIcon
 } from '@mui/icons-material';
 import { authContext } from '../../Context/authentication';
 
-const drawerWidth = 260; // Make sure this matches the Sidebar width
+const drawerWidth = 260; 
 
 const TopBar = () => {
   const theme = useTheme();
@@ -64,7 +63,7 @@ const TopBar = () => {
         backgroundColor: theme.palette.primary.main,
         borderBottom: `1px solid ${theme.palette.divider}`,
         ml: `${drawerWidth}px`,
-        width: `calc(100% - ${drawerWidth}px)` // This ensures proper width
+        width: `calc(100% - ${drawerWidth}px)` 
       }}
     >
       <Toolbar>
@@ -109,13 +108,6 @@ const TopBar = () => {
               >
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
-          </Tooltip>
-
-          {/* Settings */}
-          <Tooltip title="Settings">
-            <IconButton sx={{ color: theme.palette.primary.contrastText }}>
-              <SettingsIcon />
             </IconButton>
           </Tooltip>
 
@@ -173,10 +165,6 @@ const TopBar = () => {
           <MenuItem onClick={() => navigate('/dashboard/profile')}>
             <PersonIcon fontSize="small" color="primary" />
             <Typography color="text.primary">Profile</Typography>
-          </MenuItem>
-          <MenuItem onClick={() => navigate('/dashboard/settings')}>
-            <SettingsIcon fontSize="small" color="primary" />
-            <Typography color="text.primary">Settings</Typography>
           </MenuItem>
           <Divider sx={{ my: 1, borderColor: theme.palette.divider }} />
           <MenuItem
