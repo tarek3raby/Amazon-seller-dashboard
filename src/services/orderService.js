@@ -2,7 +2,7 @@ import axios from "axios";
 
 const apiUrl = "https://ahmed-sabry-ffbbe964.koyeb.app";
 
-const getToken = () => localStorage.getItem("token");
+const getToken = () => localStorage.getItem("sellerToken");
 
 // Configure axios instance
 const axiosInstance = axios.create({

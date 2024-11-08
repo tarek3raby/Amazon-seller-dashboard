@@ -12,7 +12,7 @@ export default function AuthProvider({ children }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const locToken = localStorage.getItem('token');
+    const locToken = localStorage.getItem('sellerToken');
     setToken(locToken);
     setIsLoading(false);
   }, []);

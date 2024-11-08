@@ -49,7 +49,7 @@ const TopBar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('sellerToken');
     setToken(null); 
     navigate('/login');
   };
