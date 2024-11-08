@@ -23,7 +23,7 @@ export default function Login() {
         values
       );
       if (data.token) {
-        localStorage.setItem('token',data.token);
+        localStorage.setItem('sellerToken',data.token);
         setToken(data.token);
         setSuccessMsg("Welcome to");
       }

@@ -4,7 +4,7 @@ import axios from "axios";
 const apiUrl = "https://ahmed-sabry-ffbbe964.koyeb.app/products";
 const uploadUrl = "https://ahmed-sabry-ffbbe964.koyeb.app/upload/image";
 
-const getToken = () => localStorage.getItem("token");
+const getToken = () => localStorage.getItem("sellerToken");
 
 // Configure axios defaults if needed
 const axiosInstance = axios.create({
